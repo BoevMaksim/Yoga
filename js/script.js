@@ -34,4 +34,53 @@ info.addEventListener('click', function (event){
     }
 });
 
+let deadline = '2019-05-16';
+
+function getTimeRemainig (endtime){
+    let t = Date.parse(endtime) - Date.parse(new Date()),
+    seconds = Math.floor((t/1000) % 60),
+    minutes = Math.floor((t/1000/60) % 60),
+    hours = Math.floor(t/(1000*60*60));
+
+    return {
+        'total' : t,
+        'hours' : hours,
+        'minuts' : minutes,
+        'seconds' : seconds
+    };
+};
+
+function setCloke (id, deadline){
+    let timer = document.getElementById(id),
+    hours = timer.querySelector('.hours'),
+    minutes = timer.querySelector('.minutes'),
+    seconds = timer.querySelector('.seconds'),
+    timeInterval = setInterval(updateCloke, 1000);
+
+    function updateCloke (){
+        let t = getTimeRemainig(deadline);
+
+            function timePlusZero (t){
+                if (t < 10) {
+                    t = '0' + t;
+                }
+            return t;
+            }
+
+            t.hours = timePlusZero(t.hours);
+            t.minuts = timePlusZero(t.minuts);
+            t.seconds = timePlusZero(t.seconds);
+    
+            hours.textContent = t.hours;
+            minutes.textContent = t.minuts;
+            seconds.textContent = t.seconds;
+        
+            if (t.total <= 0){
+                clearInterval(timeInterval);
+            }
+        }
+};  
+
+setCloke('timer', deadline);
+
 });
