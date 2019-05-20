@@ -22,7 +22,7 @@ const showTabContent = b => {
 };
 
 info.addEventListener('click', event => {
-    let target = event.target;
+    const target = event.target;
     if(target && target.classList.contains('info-header-tab')){
         for(let i=0; i<tab.length; i++){
             if(target == tab[i]){
@@ -37,7 +37,7 @@ info.addEventListener('click', event => {
 let deadline = '2019-05-21';
 
 const getTimeRemainig = endtime => {
-    let t = Date.parse(endtime) - Date.parse(new Date()),
+    const t = Date.parse(endtime) - Date.parse(new Date()),
     seconds = Math.floor((t/1000) % 60),
     minutes = Math.floor((t/1000/60) % 60),
     hours = Math.floor(t/(1000*60*60));
@@ -91,7 +91,7 @@ close = document.querySelector('.popup-close');
 
 more.addEventListener('click', () => {
     overlay.style.display ='block';
-    this.classList.add('more-splash');
+    more.classList.add('more-splash');
     document.body.style.overflow = 'hidden';
 });
 
