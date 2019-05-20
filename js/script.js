@@ -1,11 +1,11 @@
-window.addEventListener('DOMContentLoaded', function(){
+window.addEventListener('DOMContentLoaded', () => {
 'use strict';
 
-let tab = document.querySelectorAll('.info-header-tab'),
-    info = document.querySelector('.info-header'),
-    tabContent = document.querySelectorAll('.info-tabcontent');
+const tab = document.querySelectorAll('.info-header-tab'),
+      info = document.querySelector('.info-header'),
+      tabContent = document.querySelectorAll('.info-tabcontent');
 
-function hideTabContent (a){
+const hideTabContent = a => {
     for (let i=a; i<tabContent.length; i++){
         tabContent[i].classList.remove('show');
         tabContent[i].classList.add('hide');    
@@ -14,14 +14,14 @@ function hideTabContent (a){
 
 hideTabContent(1);
 
-function showTabContent (b){
+const showTabContent = b => {
     if(tabContent[b].classList.contains('hide')){
         tabContent[b].classList.remove('hide');
         tabContent[b].classList.add('show');         
     }
 };
 
-info.addEventListener('click', function (event){
+info.addEventListener('click', event => {
     let target = event.target;
     if(target && target.classList.contains('info-header-tab')){
         for(let i=0; i<tab.length; i++){
@@ -34,9 +34,9 @@ info.addEventListener('click', function (event){
     }
 });
 
-let deadline = '2019-05-16';
+let deadline = '2019-05-21';
 
-function getTimeRemainig (endtime){
+const getTimeRemainig = endtime => {
     let t = Date.parse(endtime) - Date.parse(new Date()),
     seconds = Math.floor((t/1000) % 60),
     minutes = Math.floor((t/1000/60) % 60),
@@ -50,17 +50,11 @@ function getTimeRemainig (endtime){
     };
 };
 
-function setCloke (id, deadline){
-    let timer = document.getElementById(id),
-    hours = timer.querySelector('.hours'),
-    minutes = timer.querySelector('.minutes'),
-    seconds = timer.querySelector('.seconds'),
-    timeInterval = setInterval(updateCloke, 1000);
+const setCloke = (id, deadline) => {
+    const updateCloke = () => {
+        const t = getTimeRemainig(deadline);
 
-    function updateCloke (){
-        let t = getTimeRemainig(deadline);
-
-            function timePlusZero (t){
+            const timePlusZero = t => {
                 if (t < 10) {
                     t = '0' + t;
                 }
@@ -78,22 +72,30 @@ function setCloke (id, deadline){
             if (t.total <= 0){
                 clearInterval(timeInterval);
             }
-        }
+        };
+
+    const timer = document.getElementById(id),
+    hours = timer.querySelector('.hours'),
+    minutes = timer.querySelector('.minutes'),
+    seconds = timer.querySelector('.seconds'),
+    timeInterval = setInterval(updateCloke, 1000);
+
+  
 };  
 
 setCloke('timer', deadline);
 
-let more = document.querySelector('.more'),
+const more = document.querySelector('.more'),
 overlay = document.querySelector('.overlay'),
 close = document.querySelector('.popup-close');
 
-more.addEventListener('click', function(){
+more.addEventListener('click', () => {
     overlay.style.display ='block';
     this.classList.add('more-splash');
     document.body.style.overflow = 'hidden';
 });
 
-close.addEventListener('click', function(){
+close.addEventListener('click', () => {
     overlay.style.display = 'none';
     more.classList.remove('more-splash');
     document.body.style.overflow = '';
