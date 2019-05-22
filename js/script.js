@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded', () => {
-'use strict';
 
 const tab = document.querySelectorAll('.info-header-tab'),
       info = document.querySelector('.info-header'),
@@ -34,7 +33,7 @@ info.addEventListener('click', event => {
     }
 });
 
-let deadline = '2019-05-21';
+const deadline = '2019-04-21';
 
 const getTimeRemainig = endtime => {
     const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -60,7 +59,12 @@ const setCloke = (id, deadline) => {
                 }
             return t;
             }
-
+            if (t.total <= 0){
+                clearInterval(timeInterval);
+                t.hours = 0;
+                t.minuts = 0;
+                t.seconds = 0;
+            };
             t.hours = timePlusZero(t.hours);
             t.minuts = timePlusZero(t.minuts);
             t.seconds = timePlusZero(t.seconds);
@@ -69,16 +73,14 @@ const setCloke = (id, deadline) => {
             minutes.textContent = t.minuts;
             seconds.textContent = t.seconds;
         
-            if (t.total <= 0){
-                clearInterval(timeInterval);
-            }
+           
         };
 
     const timer = document.getElementById(id),
-    hours = timer.querySelector('.hours'),
-    minutes = timer.querySelector('.minutes'),
-    seconds = timer.querySelector('.seconds'),
-    timeInterval = setInterval(updateCloke, 1000);
+          hours = timer.querySelector('.hours'),
+          minutes = timer.querySelector('.minutes'),
+          seconds = timer.querySelector('.seconds'),
+          timeInterval = setInterval(updateCloke, 1000);
 
   
 };  
@@ -100,5 +102,53 @@ close.addEventListener('click', () => {
     more.classList.remove('more-splash');
     document.body.style.overflow = '';
 });
+
+const masseg = {
+    loading: 'Загрузка...',
+    success: 'Спасибо! Мы Вам скоро перезвоним.',
+    failure: 'Что-то пошло не так...'
+};
+
+const form = document.querySelector('.main-form'),
+    input = form.getElementsByTagName('input'),
+    statusMasseg = document.createElement('div');
+
+    statusMasseg.classList.add('status');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        form.appendChild(statusMasseg);
+
+        const reqvest = new XMLHttpRequest();
+        reqvest.open('POST', 'server.php');
+        reqvest.setRequestHeader('Content-Type','applicatio/json; charset=utf-8');
+
+        const formData = new FormData(form);
+
+        const obj ={};
+
+        formData.forEach((value, key) => {
+            obj[key] = value;
+        });
+
+        const json = JSON.stringify(obj);
+
+        reqvest.send(json);
+
+        reqvest.addEventListener('readystatechange', () => {
+            if (reqvest.readyState < 4) {
+                statusMasseg.innerHTML = masseg.loading;
+            } else if (reqvest.readyState === 4 && reqvest.status == 200) {
+                statusMasseg.innerHTML = masseg.success;
+            } else {
+                statusMasseg.innerHTML = masseg.failure;
+            } 
+        });
+
+            for (let i = 0; i < input.length; i++) {
+                input[i].value = '';
+            }
+
+    });
 
 });
